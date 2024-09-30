@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 12, 2023 at 04:34 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th9 30, 2024 lúc 08:09 AM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,36 +18,36 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bandongho`
+-- Cơ sở dữ liệu: `bandongho`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Cấu trúc bảng cho bảng `categories`
 --
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `categories`
+-- Đang đổ dữ liệu cho bảng `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`, `status`) VALUES
-(1, 'gshock', 1),
-(2, 'seiko', 1),
-(3, 'Casio', 1),
-(4, 'Skagen', 1),
-(5, 'Fosil', 1);
+(1, 'Áo thun', 1),
+(2, 'Áo sơ mi\r\n', 1),
+(3, 'Quần shorts', 1),
+(4, 'Quần jeans', 1),
+(5, 'Phụ kiện nam', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Cấu trúc bảng cho bảng `orders`
 --
 
 CREATE TABLE `orders` (
@@ -64,32 +64,19 @@ CREATE TABLE `orders` (
   `city` varchar(255) DEFAULT NULL,
   `district` varchar(255) DEFAULT NULL,
   `pay_method` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `orders`
+-- Đang đổ dữ liệu cho bảng `orders`
 --
 
 INSERT INTO `orders` (`id`, `customer_name`, `customer_address`, `customer_email`, `customer_phone_number`, `total_price`, `status`, `created_at`, `user_id`, `delivery_at`, `city`, `district`, `pay_method`) VALUES
-(1, 'duongngocnguyen', '6NguyenTrai', 'abcde@gmail.com', '0123456789', '0.00', 'Đang xử lý', '2023-05-05 17:16:48', 2, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'bank_transfer'),
-(2, 'duongngocnguyen', '6NguyenTrai', 'abcde@gmail.com', '0123456789', '0.00', 'Đang xử lý', '2023-05-05 17:17:51', 2, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'bank_transfer'),
-(3, 'duongngocnguyen', '6NguyenTrai', 'abcde@gmail.com', '0123456789', '0.00', 'Đang xử lý', '2023-05-05 17:21:00', 2, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'bank_transfer'),
-(4, 'duongngocnguyen', '6NguyenTrai', 'abcde@gmail.com', '0123456789', '0.00', 'Đang xử lý', '2023-05-05 17:22:29', 2, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'bank_transfer'),
-(5, 'duongminhson', '273 An Duong Vuong', 'minhson@gmail.com', '0050505055', '2550000.00', 'Đã hoàn thành', '2023-05-05 17:30:11', 7, '2023-05-07', 'Thành phố Hồ Chí Minh', 'Quận 5', 'cash_on_delivery'),
-(6, 'hodanghoang', '273 An Duong Vuong', 'hoang@gmail.com', '0121021021', '2550000.00', 'Đã hoàn thành', '2023-05-05 17:36:04', 5, '2023-05-07', 'Thành phố Hồ Chí Minh', 'Quận Bình Tân', 'bank_transfer'),
-(7, 'thanhthao', '110 Ba Hom', 'thao@gmail.com', '0525252521', '2100000.00', 'Đã hoàn thành', '2023-05-05 17:43:44', 5, '2023-05-09', 'Thành phố Hồ Chí Minh', 'Quận 6', 'cash_on_delivery'),
-(8, 'minhsonduong', '273 An Duong Vuong', 'minhsonduong@gmail.com', '0123456789', '2100000.00', 'Đang xử lý', '2023-05-06 10:02:08', 7, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'cash_on_delivery'),
-(9, 'dương ngọc nguyên', '273 An Dương Vương', 'abcde@gmail.com', '0121021021', '8750000.00', 'Đang xử lý', '2023-05-08 14:54:52', 7, NULL, 'Thành phố Hồ Chí Minh', 'Quận 5', 'cash_on_delivery'),
-(10, 'ngọc nguyên', '273 An Dương Vương', 'thao@gmail.com', '0050505055', '2100000.00', 'Đã hoàn thành', '2023-05-08 14:56:21', 7, '2023-05-18', 'Thành phố Hồ Chí Minh', 'Quận 5', 'bank_transfer'),
-(11, 'duongngocnguyen', '273 An Duong Vuong', 'abcde@gmail.com', '0123456789', '1250000.00', 'Đang xử lý', '2023-05-09 06:15:27', 7, NULL, 'Tỉnh Cao Bằng', 'Huyện Hà Quảng', 'bank_transfer'),
-(12, 'Pham thanh vuong', 'dai hoc sai gon', 'zz@gmail.com', '0973366791', '1050000.00', 'Đang xử lý', '2023-05-09 08:59:49', 7, NULL, 'Thành phố Hồ Chí Minh', 'Quận 12', 'cash_on_delivery'),
-(13, 'hoang', 'binh chanh', 'hodanghoang2003@gmail.com', '123142352', '3100000.00', 'Đang xử lý', '2023-05-09 15:34:52', 7, NULL, 'Thành phố Hồ Chí Minh', 'Huyện Bình Chánh', 'cash_on_delivery'),
-(14, 'hoang', 'binh chanh', 'hoang123@gmail.com', '0377694735', '2600000.00', 'Đang xử lý', '2023-05-10 02:22:20', 7, NULL, 'Thành phố Hồ Chí Minh', 'Huyện Bình Chánh', 'cash_on_delivery');
+(21, 'test', 'okok', 'test@gmail.com', '0912345678', 945000.00, 'Đã hoàn thành', '2024-09-29 14:16:35', 1, '2024-09-29', 'Tỉnh Hoà Bình', 'Huyện Lạc Thủy', 'cash_on_delivery');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_details`
+-- Cấu trúc bảng cho bảng `order_details`
 --
 
 CREATE TABLE `order_details` (
@@ -99,33 +86,20 @@ CREATE TABLE `order_details` (
   `quantity` int(11) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `order_details`
+-- Đang đổ dữ liệu cho bảng `order_details`
 --
 
 INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `quantity`, `price`, `total_price`) VALUES
-(1, 4, 36, 5, '1050000.00', '5250000.00'),
-(2, 4, 9, 2, '1050000.00', '2100000.00'),
-(3, 5, 1, 2, '1275000.00', '2550000.00'),
-(4, 6, 1, 2, '1275000.00', '2550000.00'),
-(5, 7, 36, 1, '1050000.00', '1050000.00'),
-(6, 7, 34, 1, '1050000.00', '1050000.00'),
-(7, 8, 9, 1, '1050000.00', '1050000.00'),
-(8, 8, 36, 1, '1050000.00', '1050000.00'),
-(9, 9, 37, 7, '1250000.00', '8750000.00'),
-(10, 10, 36, 2, '1050000.00', '2100000.00'),
-(11, 11, 37, 1, '1250000.00', '1250000.00'),
-(12, 12, 39, 1, '1050000.00', '1050000.00'),
-(13, 13, 40, 2, '1550000.00', '3100000.00'),
-(14, 14, 40, 1, '1550000.00', '1550000.00'),
-(15, 14, 39, 1, '1050000.00', '1050000.00');
+(22, 21, 55, 1, 318000.00, 318000.00),
+(23, 21, 50, 3, 209000.00, 627000.00);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Cấu trúc bảng cho bảng `products`
 --
 
 CREATE TABLE `products` (
@@ -135,52 +109,34 @@ CREATE TABLE `products` (
   `image_url` varchar(255) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `category_id` int(11) DEFAULT NULL,
+  `isshow` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `products`
+-- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `image_url`, `price`, `quantity`, `category_id`) VALUES
-(1, 'G-SHOCK GA-700-4ADR', 'Mẫu GA-700-4ADR nổi bật với mặt số bằng kim chỉ kết hợp cùng mặt số điện tử với những tính năng hiện đại đầy tiện dụng, ấn tượng với vỏ máy phối cùng dây đeo bằng cao su tông màu đỏ thời trang.', 'dh2.webp', '3500000.00', 112, 1),
-(7, 'G-SHOCK GA-700-1ADR', 'Đồng hồ G-Shock GA-700-1ADR với thiết kế vỏ máy bằng nhựa kết hợp cùng dây đeo cao su khả năng chống nước cao, theo phong cách thể thao kết hợp mặt số điện tử với những tính năng tiện dụng.', 'dh3.webp', '3500000.00', 7, 1),
-(8, 'CASIO ECB-900DB-1BDR', 'Mẫu Casio ECB-900DB-1BDR tính năng vượt trội pin được trang bị công nghệ Solar (Năng lượng ánh sáng), Edifice phiên bản đặc biệt mặt số kim chỉ kết hợp ô số điện tử.', 'dh4.webp', '6900000.00', 12, 3),
-(9, 'CASIO LA680WGA-9DF', 'Mẫu đồng hồ nam Casio LA680WGA-9DF khoác lên vẻ sang trọng với vỏ máy cùng dây đeo bằng kim loại mạ vàng nổi bật lên sự nam tính với bộ dây đeo bằng kim loại tạo nên vẻ rắn chắc.', 'dh5.webp', '1890000.00', 5, 3),
-(10, 'G-SHOCK GA-2003-1A2VX', 'Mẫu G-Shock GA-2003-1A2VX phần vỏ viền ngoài tạo hình nền cọc số mang lại vẻ thể thao năng động cùng các ô số điện tử hiện thị chức năng lịch và đo thời gian.', 'dh9.webp', '900000.00', 5, 1),
-(11, 'G-SHOCK GA-700-4ADR', 'Mẫu GA-700-4ADR nổi bật với mặt số bằng kim chỉ kết hợp cùng mặt số điện tử với những tính năng hiện đại đầy tiện dụng, ấn tượng với vỏ máy phối cùng dây đeo bằng cao su tông màu đỏ thời trang.', 'dh6.webp', '1550000.00', 10, 1),
-(12, 'CASIO MTP-V004L-1B2UDF', 'Mẫu Casio MTP-V004L-1B2UDF mặt số đen size 41mm thiết kế đơn giản trẻ trung 3 kim, phối cùng bộ dây da nâu phiên bản da trơn thời trang.', 'dh7.webp', '800000.00', 5, 3),
-(13, 'SEIKO BAMBINO RA-AG05', 'Mẫu Orient RA-AG05 thiết kế Open Heart nổi bật trên nền mặt số xanh thời trang với ô chân kính phô diễn ra hoạt động của bộ máy cơ tạo nên vẻ ngoài độc đáo dành cho phái mạnh.', 'dh8.webp', '1100000.00', 5, 2),
-(14, 'G-SHOCK GA-2000-1A2DR', 'Mẫu G-Shock GA-2000-1A2DR phần vỏ viền ngoài tạo hình nền cọc số mang lại vẻ thể thao năng động cùng các ô số điện tử hiện thị chức năng lịch và đo thời gian.', 'dh9.webp', '4600000.00', 5, 1),
-(15, 'G-SHOCK GA-110GB-1ADR', 'Đồng hồ G-Shock GA-110GB-1ADR với phong cách cá tính mạnh mẽ, tông màu phối hợp bắt mắt giữa đen và vàng, chất liệu là nhựa cao cấp siêu bền, mặt kính khoáng cứng chịu lực và chống thấm nước.', 'dh10.webp', '1750000.00', 5, 1),
-(16, 'CASIO ECB-900DB-1BDR', 'Mẫu Casio ECB-900DB-1BDR tính năng vượt trội pin được trang bị công nghệ Solar (Năng lượng ánh sáng), Edifice phiên bản đặc biệt mặt số kim chỉ kết hợp ô số điện tử.', 'dh11.webp', '1250000.00', 5, 3),
-(17, 'CASIO LA680WGA-9DF', 'Mẫu đồng hồ nam Casio LA680WGA-9DF khoác lên vẻ sang trọng với vỏ máy cùng dây đeo bằng kim loại mạ vàng nổi bật lên sự nam tính với bộ dây đeo bằng kim loại tạo nên vẻ rắn chắc.', 'dh12.webp', '1890000.00', 5, 3),
-(18, 'CASIO MTP-V004L-1B2UDF', 'Mẫu Casio MTP-V004L-1B2UDF mặt số đen size 41mm thiết kế đơn giản trẻ trung 3 kim, phối cùng bộ dây da nâu phiên bản da trơn thời trang.', 'dh13.webp', '800000.00', 5, 3),
-(19, 'CASIO MTP-1384L-7AVDF', 'Đồng hồ Casio MTP-1384L-7AVDF có vỏ kim loại bằng chất liệu thép không gỉ mạ màu đồng sang trọng bao quanh nền trắng mặt số, kim chỉ và vạch số La Mã truyền thống được làm mỏng nổi bật.', 'dh14.webp', '850000.00', 5, 3),
-(20, 'CASIO EFV-550L-1AVUDF', 'Mẫu Casio EFV-550L-1AVUDF mang đến cho phái mạnh vẻ ngoài lịch lãm nhưng cũng không kém phần trẻ trung đặc trưng thuộc dòng Edifice với kiểu dáng đồng hồ 6 kim đi kèm tính năng đo thời gian Chronograph.', 'dh15.webp', '1350000.00', 5, 3),
-(21, 'CASIO MTP-V004G-7BUDF', 'Đồng hồ Casio MTP-V004G-7BUDF có vỏ và dây đeo kim loại mạ vàng, nền số màu trắng sang trọng cùng kim chỉ được làm mỏng lịch lãm, chữ số giờ được phủ đen nổi bật.', 'dh16.webp', '1300000.00', 5, 3),
-(22, 'CASIO MTP-1303SG-7AVDF', 'Đồng hồ Casio MTP-1303SG-7AVDF có mặt số tròn lớn, niềng kim loại mạ bạc tinh tế bao quanh nền số màu xám sang trọng, kim chỉ và vạch số mạ vàng có phản quang nổi bật.', 'dh17.webp', '1800000.00', 5, 3),
-(23, 'CASIO EDIFICE EFV-540D', 'Mẫu đồng hồ EFV-540D-2AVUDF thuộc dòng Edifice đến từ thương hiệu Casio với kiểu dáng 6 kim kèm theo tính năng Chronograph tạo nên vẻ ngoài nam tính thời trang với nền mặt số xanh nổi bật.', 'dh18.webp', '3500000.00', 5, 3),
-(25, 'CASIO EFV-540D-1AVUDF', 'Mẫu Casio EFV-540D-1AVUDF kiểu dáng 6 kim kẻm theo 3 núm vặn bên hông với vẻ ngoài đặc trưng thuộc dòng Edifice mang trên mình phong cách thể thao đầy lịch lãm cho các phái mạnh cùng khả năng chịu nước 10ATM.', 'dh19.webp', '3500000.00', 5, 3),
-(26, 'CASIO MTP-1303D-7AVDF', 'Đồng hồ Casio MTP-1303D-7AVDF có mặt số tròn to mạnh mẽ, niềng kim loại tinh tế bo xung quanh nền trắng mặt số, kim chỉ và vạch chỉ giờ được mạ bạc phủ phản quang nổi bật, dây đeo kim loại đem đến cho phái mạnh.', 'dh20.webp', '1250000.00', 5, 3),
-(27, 'SEIKO SUR377P1', 'Mẫu Seiko SUR377P1 điểm nổi bật với thiết kế dây vỏ kim loại chất liệu bằng Titanium tạo cảm giác nhẹ tay cho người đeo, các chi tiết kim chỉ cùng cọc vạch số được mạ vàng.', 'dh21.webp', '9200000.00', 5, 2),
-(28, 'SEIKO PRESAGE SRPE41J1', 'Mẫu Seiko SRPE41J1 phiên bản dây da trơn nâu thời trang thiết kế đơn giản chức năng 3 kim cùng các cọc vạch số mạ bạc nổi bật trên nền mặt số kích thước 38.5mm.', 'dh22.webp', '1200000.00', 5, 2),
-(29, 'SEIKO PRESAGE SSA445J1', 'Mẫu Seiko SSA445J1 phiên bản giới hạn chỉ 4000 chiếc trên toàn thế giới, thiết kế open heart (máy cơ lộ tim) tạo nên vẻ độc đáo trên nền mặt số xanh kích thước 40.8mm.', 'dh23.webp', '1600000.00', 5, 2),
-(30, 'SEIKO SUR421P1', 'Mẫu Seiko SUR421P1 phiên bản dây da tạo hình vân vẻ ngoài lịch lãm không kém phần trẻ trung cùng với thiết kế chi tiết cọc vạch số tạo hình lưỡi kiếm trên nền mặt số size 39mm.', 'dh24.webp', '3500000.00', 5, 2),
-(31, 'SEIKO SUP370P1', 'Vẻ đẹp thanh lịch đến từ mẫu dây da nâu có vân ẩn chứa với vẻ ngoài giản dị của chiếc đồng hồ Seiko SUP370P1 nhưng lại mang trên mình một vẻ đẹp hiện đại dành cho phái đẹp được trang bị công nghệ Solar (Năng Lượng Ánh Sáng).', 'dh25.webp', '4350000.00', 5, 2),
-(32, 'SKAGEN SKW2509', 'Mẫu đồng hồ SKW2509 thiết kế mang đậm phong cách đặc trưng đến từ thương hiệu Skagen với vẻ ngoài đầy cuốn hút mọi ánh nhìn dành cho phái đẹp với tổng thể được bao phủ tông màu vàng nổi bật.', 'dh26.webp', '5300000.00', 5, 4),
-(33, 'SKAGEN SKW6453', 'Nam tính đi kèm phong cách giản dị trẻ trung đặc trưng đến từ thương hiệu Skagen với mẫu SKW6453 đồng hồ 3 kim, điểm nhấn tạo nên vẻ thời trang nổi bật với mẫu dây vải được tạo hình hoa văn.', 'dh27.webp', '4600000.00', 5, 4),
-(34, 'SKAGEN SKW2307', 'Đồng hồ Skagen SKW2307 có mặt số tròn truyền thống với viền được làm mỏng tinh tế, nền số màu xanh tinh khiết, kim chỉ được phủ bạc và vạch số được đính pha lê sang trọng nổi bật, dây đeo kim loại dạng lưới thời trang.', 'dh28.webp', '950000.00', 7, 4),
-(35, 'SKAGEN SKW2475', 'Đồng hồ nữ Skagen SKW2475 theo xu hướng giản dị dành cho nữ, kim chỉ cùng với viền ngoài mạ đồng sang trọng trên nền mặt số đen huyền ảo, phối cùng với dây đeo bằng da màu đen tạo nên vẻ đẹp thời trang trẻ trung cho phái nữ.', 'dh29.webp', '3950000.00', 7, 4),
-(36, 'SKAGEN SKW6352 DÂY DA', 'dh', 'dh30.webp', '950000.00', 11, 4),
-(37, 'FOSSIL HARRY POTTER Y', 'dh', 'lm1.webp', '1750000.00', 7, 5),
-(39, 'FOSSIL HARRY POTTER W', 'Mẫu Fossil LE1160 phiên bản giới hạn dành tặng các fan chân chính nhà Ravenclaw với mẫu đeo chất liệu bằng dây vải thời trang, tông xanh dương đậm chất Hogwarts, kết hợp cùng vỏ máy kim loại mạ bạc thiết kế phay xước đầy tinh tế.', 'lm3.webp', '1750000.00', 5, 5),
-(40, 'FOSSIL HARRY POTTER G', 'Mẫu Fossil LE1161 phiên bản giới hạn dành tặng các fan chân chính nhà Slytherin với mẫu đeo chất liệu bằng dây vải thời trang, tông xanh lá đậm chất Hogwarts, kết hợp cùng vỏ máy kim loại mạ tone bạc phay xước đầy tinh tế.', 'lm4.webp', '1750000.00', 5, 5);
+INSERT INTO `products` (`id`, `name`, `description`, `image_url`, `price`, `quantity`, `category_id`, `isshow`) VALUES
+(43, 'Áo thun thể thao Mesh', 'Đặc điểm nổi bật\r\n100% Polyester.\r\nCông nghệ Exdry, thấm hút và nhanh khô.\r\nThoải mái và co giãn tự nhiên.\r\nKiểu dệt Mesh thoáng khí.\r\nNgười mẫu: 181cm - 76kg, mặc áo 2XL.\r\nTự hào sản xuất tại Nhà máy Scavi, Việt Nam', 'Áo thun thể thao Mesh.jpg', 159000.00, 999, 1, 0),
+(44, 'Áo thun nam Cotton Compact', 'Đặc điểm nổi bật\r\n76% Polyester 19% Tencel 5% Spandex.\r\nCông nghệ Exdry, thấm hút và nhanh khô.\r\nThoải mái và co giãn tự nhiên.\r\nKiểu dệt Welf Knit (Dệt kim đang ngang).\r\nNgười mẫu: 181cm - 76kg, mặc áo 2XL.\r\nTự hào sản xuất tại Nhà máy Scavi, Việt Nam.', 'Áo thun nam Cotton Compact.jpg', 219000.00, 999, 1, 0),
+(45, 'Áo thun Training Comfort', 'Đặc điểm nổi bật\r\n76% Polyester 19% Tencel 5% Spandex.\r\nCông nghệ Exdry, thấm hút và nhanh khô.\r\nThoải mái và co giãn tự nhiên.\r\nKiểu dệt Welf Knit (Dệt kim đang ngang).\r\nNgười mẫu: 181cm - 76kg, mặc áo 2XL.\r\nTự hào sản xuất tại Nhà máy Scavi, Việt Nam. ', 'Áo thun Training Comfort.jpg', 259000.00, 88, 1, 0),
+(46, 'Áo Sơ Mi Dài Tay Premium Poplin', 'Thông tin sản phẩm\r\nChất liệu 100% Cotton mềm mại, chống nhăn, kiểu dệt Dobby thoáng khí\r\nVải có khả năng trượt nước, chống bám bụi\r\nVải ứng dụng công nghệ nano giúp loại bỏ hơn 70% vi khuẩn và khử mùi hiệu quả\r\nKiểu dáng: Slim Fit thanh lịch\r\nNgười mẫu: 186cm - 77kg, mặc áo 2XL\r\nTự hào sản xuất tại Việt Nam', 'Áo Sơ Mi Dài Tay Premium Poplin.jpg', 599000.00, 22, 2, 0),
+(47, 'Áo Sơ Mi Dài Tay Premium Dobby', 'Thông tin sản phẩm\r\nChất liệu 100% Cotton mềm mại, chống nhăn, kiểu dệt Dobby thoáng khí\r\nVải có khả năng trượt nước, chống bám bụi\r\nVải ứng dụng công nghệ nano giúp loại bỏ hơn 70% vi khuẩn và khử mùi hiệu quả\r\nKiểu dáng: Slim Fit thanh lịch\r\nNgười mẫu: 186cm - 77kg, mặc áo 2XL\r\nTự hào sản xuất tại Việt Nam', 'Áo Sơ Mi Dài Tay Premium Dobby.jpg', 599000.00, 22, 2, 0),
+(48, 'Quần Shorts thể thao 7 inch đa năng', 'Đặc điểm nổi bật\r\nChất liệu: 86% Polyester + 14% Spandex, định lượng vải 125gsm\r\nLớp vải mesh: 90% Polyamide + 10% Spandex\r\nVải dệt Woven Plain\r\nCông nghệ ExDry thấm hút tốt, nhanh khô, thoáng khí\r\nQuần co giãn thoải mái\r\nĐộ dài quần: 7 inch\r\nTự hào sản xuất tại Việt Nam*\r\nNgười mẫu: 182cm - 76kg, mặc quần XL', 'Quần Shorts thể thao 7 inch đa năng.jpg', 179000.00, 999, 3, 0),
+(49, 'Quần Shorts Chạy Bộ 2 Lớp Fast & Free Run II', 'Thông tin sản phẩm\r\nVải chính: 90% Polyester + 10% Spandex\r\nLớp trong: 86% Polyester + 14% Spandex\r\nKiểu dệt Plain giúp vải mịn, nhẹ và co giãn hơn\r\nLớp trong co giãn 4 chiều mang lại sự thoải mái để bạn vận động hết mình\r\nChất liệu nhẹ và co giãn tốt hơn\r\nXử lý hoàn thiện vải: Nhanh khô (Ex-Dry) + Thấm hút (Wicking)\r\nLớp trong hạn chế tối đa ma sát khi vận động nhờ các đường may tối giản ứng dụng Công nghệ Chafe-Free\r\nSản phẩm được đánh giá phù hợp với hoạt động chạy bộ bởi các Runner\r\nTự hào sản xuất tại Việt Nam', 'Quần Shorts Chạy Bộ 2 Lớp Fast & Free Run II.jpg', 119000.00, 999, 3, 0),
+(50, 'Quần Shorts chạy bộ Advanced Vent Tech', 'Đặc điểm nổi bật\r\nVải Recycle Polyester với nhiều tính năng ưu việt.\r\nCông nghệ ExDry thấm hút và nhanh khô.\r\nĐịnh lượng 95gsm.\r\nPhối vải Mesh vạt sau giúp thông thoáng.\r\nGiặt máy nước lạnh, giặt nhẹ, không giặt khô, sấy khô ở mức thấp, không tẩy.\r\nNgười mẫu: 175cm - 69kg, mặc quần XL.\r\nTự hào sản xuất tại Nhà máy Scavi, Việt Nam', 'Quần Shorts chạy bộ Advanced Vent Tech.jpg', 209000.00, 74, 3, 0),
+(51, 'Quần Jeans Nam Basics dáng Straight', 'Đặc điểm nổi bật\r\nChất liệu: Denim\r\nThành phần: 100% Cotton\r\nCông nghệ Laser Marking tạo các vệt hiệu ứng chuẩn xác trên sản phẩm\r\nBề mặt quần không thô ráp\r\nCo giãn tốt giúp quần ôm vừa vặn, thoải mái\r\nDáng Regular Straight suông rộng, thoải mái, không thùng thình\r\nNgười mẫu: 179 cm - 75 kg, mặc quần size 32\r\nTự hào sản xuất tại Việt Nam\r\nLưu ý:Sản phẩm vẫn sẽ bạc màu sau một thời gian dài sử dụng theo tính chất tự nhiên', 'Quần Jeans Nam Basics dáng Straight.jpg', 499000.00, 77, 4, 0),
+(52, 'Quần Jeans Nam Basics dáng Slim fit', 'Đặc điểm nổi bật\r\nChất liệu: Denim\r\nThành phần: 98% Cotton + 2% Spandex\r\nCông nghệ Laser Marking tạo các vệt hiệu ứng chuẩn xác trên sản phẩm\r\nVải Denim được wash trước khi may nên không rút và hạn chế ra màu sau khi giặt\r\nBề mặt quần không thô ráp\r\nCo giãn tốt giúp quần ôm vừa vặn, thoải mái\r\nDáng Slim Fit ôm tôn dáng, giúp bạn \"hack\" đôi chân dài và gọn đẹp\r\nNgười mẫu: 179 cm - 75 kg, mặc quần size 32\r\nTự hào sản xuất tại Việt Nam\r\nLưu ý:Sản phẩm vẫn sẽ b', 'Quần Jeans Nam Basics dáng Slim fit.jpg', 499000.00, 77, 4, 0),
+(53, 'Đai Đeo Bụng Chạy Bộ Fast & Free', 'Đặc điểm nổi bật\r\nChất liệu: Vải knit Mesh\r\nThành phần: 85% Polyamide + 15% Elasthan\r\nBề mặt lưới 2 lớp thoáng khí, nhanh khô\r\nLớp lưới mặt trong giúp hạn chế ma sát, thoải mái vận động\r\nĐai gồm nhiều ngăn túi, đựng vừa ví, điện thoại, chai nước\r\nDây treo gậy đi trail\r\nLogo phản quang tăng sự an toàn khi tập luyện trời tối\r\nĐai đeo ôm sát bụng\r\nTự hào sản xuất tại Việt Nam', 'Đai Đeo Bụng Chạy Bộ Fast & Free.jpg', 359000.00, 77, 5, 0),
+(54, 'Túi UT Duffle size vừa 18L', 'Thông tin sản phẩm\r\nChất liệu Polyester tái chế có độ bền bỉ cao, thân thiện với môi trường.\r\nChống thấm nước, giúp hạn chế hư hỏng.\r\nLớp vải lót bên trong túi được làm từ chất liệu mềm mịn, được xử lý kháng khuẩn nghiêm ngặt, chống nấm mốc.\r\nKích thước của túi: Dài - 43cm; Rộng - 21cm; Cao - 26cm', 'Túi UT Duffle size vừa 18Lg', 359000.00, 77, 5, 0),
+(55, 'Combo 2 Cặp Gaiter Chạy Bộ Bọc Chân', 'Đặc điểm nổi bật\r\nThành phần: 88% Recycled Polyester + 12% Spandex\r\nKiểu dệt Wrap Knit\r\nTrọng lượng siêu nhẹ\r\nDây chun vòng qua đế giày, giữ cố đinh khi chạy\r\nLogo phản quang tăng sự an toàn khi tập luyện trời tối\r\nTự hào sản xuất tại Việt Nam', 'Combo 2 Cặp Gaiter Chạy Bộ Bọc Chân.jpg', 318000.00, 76, 5, 0),
+(56, 'Túi Tote 84RISING Denim', 'Đặc điểm nổi bật\r\nChất liệu: 100% Jeans Cotton cao cấp\r\nKích thước: 40cm x 37cm x 7cm\r\nCông nghệ wash bạc màu hiện đại\r\nThiết kế túi tote tối giản gồm 2 phần: thân túi thường là hình chữ nhật và dây xách\r\nMàu sắc: Xanh Navy\r\nTự hào sản xuất tại Việt Nam', 'Túi Tote 84RISING Denim.jpg', 199000.00, 77, 5, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Cấu trúc bảng cho bảng `users`
 --
 
 CREATE TABLE `users` (
@@ -190,10 +146,10 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Đang đổ dữ liệu cho bảng `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `is_admin`, `status`) VALUES
@@ -209,24 +165,24 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `is_admin`, `status`
 (13, 'son23213', '123', 'son@gmail.com', 0, 0);
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `categories`
+-- Chỉ mục cho bảng `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
+-- Chỉ mục cho bảng `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_user_id` (`user_id`);
 
 --
--- Indexes for table `order_details`
+-- Chỉ mục cho bảng `order_details`
 --
 ALTER TABLE `order_details`
   ADD PRIMARY KEY (`id`),
@@ -234,71 +190,71 @@ ALTER TABLE `order_details`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `products`
+-- Chỉ mục cho bảng `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `users`
+-- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `categories`
+-- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `order_details`
+-- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `orders`
+-- Các ràng buộc cho bảng `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `order_details`
+-- Các ràng buộc cho bảng `order_details`
 --
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
--- Constraints for table `products`
+-- Các ràng buộc cho bảng `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
