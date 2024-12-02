@@ -49,7 +49,10 @@
                         dành cho Quý khách hàng.</p>
                 </div>
                 <div class="col-md-6 order-lg-0">
-                    <img src="./img/gioithieu.jpg" alt="" class="img-fluid">
+                    <video src="./img/video-song-luan-bst-thu-dong.mp4" class="img-fluid" controls autoplay muted>
+                        Your browser does not support the video tag.
+                    </video>
+
                 </div>
             </div>
         </div>
