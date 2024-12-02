@@ -60,6 +60,7 @@ for ($i = 1; $i <= $totalPage; $i++) {
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Sửa</th>
                                 <th scope="col">Ẩn</th>
+                                <th scope="col">Xóa</th>
 
                             </tr>
                         </thead>
@@ -77,6 +78,7 @@ for ($i = 1; $i <= $totalPage; $i++) {
                        <td>' . $an . '</td>
                        <td><a href="./admin.php?adminlayout=suadanhmuc&page=' . $page . '&id_dm=' . $row['id'] . '" class="addnew_btn">Sửa</a></td>
                        <td><a href="./adminandanhmuc.php?page=' . $page . '&id_dm=' . $row['id'] . '" class="addnew_btn">Ẩn</a></td>                                           
+                       <td><a href="./adminxoadanhmuc.php?page=' . $page . '&id_dm=' . $row['id'] . '" class="addnew_btn"  onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục này không?`);">Xóa</a></td>                                           
                        </tr>';
                             }
 
