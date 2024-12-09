@@ -122,7 +122,7 @@ if (!isset($_SESSION['adminname'])) {
                             </a>
                         </div>
 
-                        <div class="sign_out">
+                        <div class="sign_out" style="    position: fixed;top: 0px;left: 0;">
                             <a href="./logoutadmin.php"><i class="fas fa-right-from-bracket"></i></a>
                         </div>
                     </div>
