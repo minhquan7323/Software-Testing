@@ -181,3 +181,39 @@
     text-decoration: none;
     color: black;
 }
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    z-index: 999;
+}
+
+.scroll-to-top.visible {
+    display: block;
+    /* Hiển thị khi cuộn trang đủ xa */
+}
+
+.scroll-button {
+    cursor: pointer;
+    background-color: #007bff;
+    /* Màu nền nút */
+    color: white;
+    /* Màu biểu tượng */
+    border: none;
+    border-radius: 50%;
+    /* Nút hình tròn */
+    padding: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.scroll-button:hover {
+    transform: scale(1.1);
+    /* Hiệu ứng phóng to khi hover */
+}

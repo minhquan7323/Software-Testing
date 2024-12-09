@@ -155,6 +155,32 @@ if (isset($_GET["layout"])) {
     <!-- End contact -->
 
     <!-- Start footer -->
+
+    <div id="scrollToTop" class="scroll-to-top">
+        <div class="scroll-button">
+            <i class="fa-solid fa-up-long"></i>
+        </div>
+    </div>
+    <script>
+        const scrollToTopButton = document.getElementById('scrollToTop');
+        const toggleVisibility = () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopButton.classList.add('visible');
+            } else {
+                scrollToTopButton.classList.remove('visible');
+            }
+        };
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        // scrollToTopButton.addEventListener('click', scrollToTop);
+        window.addEventListener('scroll', toggleVisibility);
+    </script>
+
     <footer class="bg-dark py-5">
         <div class="container">
             <div class="row text-white g-4">
