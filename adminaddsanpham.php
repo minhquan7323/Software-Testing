@@ -6,9 +6,12 @@ if (isset($_POST['nutthemsp'])) {
     $soluongsp = $_POST['soluong'];
     $danhmucsp = $_POST['danh_muc'];
     $noidungsp = $_POST['noi_dung'];
-    $anhsp;
-    if (isset($_FILES['hinh_anh']['name'])) {
+    $anhsp = '';
+    // Kiểm tra và xử lý upload file ảnh
+    if (isset($_FILES['hinh_anh']['name']) && !empty($_FILES['hinh_anh']['name'])) {
         $anhsp = $_FILES['hinh_anh']['name'];
+        $tmp_name = $_FILES['hinh_anh']['tmp_name'];
+        move_uploaded_file($tmp_name, "./img/" . $anhsp); // Di chuyển file vào thư mục img
     }
     $mysqli = new mysqli('localhost', 'root', '', 'bandongho');
 
@@ -22,10 +25,19 @@ if (isset($_POST['nutthemsp'])) {
     $stmt->bind_param('sssdii', $tensp, $noidungsp, $anhsp, $giasp, $soluongsp, $danhmucsp);
 
     // Thực hiện execute
-    $stmt->execute();
+    if ($stmt->execute()) {
+        // Thành công
+        header('location: ./admin.php?adminlayout=adminsanpham');
+    } else {
+        // Lỗi khi thêm sản phẩm
+        echo "<script>alert('Thêm sản phẩm thất bại');</script>";
+    }
 
-    header('location: ./admin.php?adminlayout=adminsanpham');
+    // Đóng kết nối
+    $stmt->close();
+    $mysqli->close();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,10 +94,10 @@ if (isset($_POST['nutthemsp'])) {
                                             }
                                             ?>
                                     </div>
-                                    <div class="form-floating mb-3">
+                                    <!-- <div class="form-floating mb-3">
                                         <select class="form-select" id="floatingSelect" aria-label="123">
                                             <label for="floatingSelect">Danh mục</label>
-                                    </div>
+                                    </div> -->
 
                                     <div class="form-floating mb-3">
                                         <div class="as">

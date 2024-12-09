@@ -81,12 +81,9 @@ if (isset($_POST['nutsuasp'])) {
                                         <input name="soluong" value="<?php echo $rowsp['quantity']; ?>" type="text" class="form-control" id="floatingInput" placeholder="Số lượng" required>
                                         <label for="floatingInput">Số lượng</label>
                                     </div>
-
                                 </div>
                                 <div class="col-6">
                                     <div class="form-floating mb-3">
-
-
                                         <select name="danh_muc" class="form-select" id="floatingSelect" aria-label="123" required>
                                             <?php
                                             $sqldanhmuc = "select * from categories";
@@ -105,10 +102,6 @@ if (isset($_POST['nutsuasp'])) {
                                             <?php
                                             }
                                             ?>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="floatingSelect" aria-label="123">
-                                            <label for="floatingSelect">Danh mục</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
