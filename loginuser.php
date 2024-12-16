@@ -4,44 +4,56 @@ include('./config.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
 
+    // Khởi tạo lỗi nếu chưa có
+    if (!isset($_SESSION['errors'])) {
+        $_SESSION['errors'] = [];
+    }
 
-    $_SESSION['login'] = 0;
-    $name = mysqli_real_escape_string($conn, $_POST['logname']);
+    $_SESSION['login'] = 0; // Mặc định là chưa đăng nhập
+    $name = mysqli_real_escape_string($conn, $_POST['logname']); // Làm sạch dữ liệu đầu vào
     $pass = $_POST['logpass'];
 
-    $error = [];
-
+    // Kiểm tra trường nhập liệu
     if (empty($name)) {
-        $error['rongten'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
+        $_SESSION['errors']['rongten'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
     }
     if (empty($pass)) {
-        $error['rongpass'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
+        $_SESSION['errors']['rongpass'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
     }
 
+    // Kiểm tra nếu không có lỗi
+    if (empty($_SESSION['errors'])) {
+        // Sử dụng prepared statement để tránh SQL injection
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $sql = "select * from users where username = '$name' and password = '$pass' ";
-    $result = mysqli_query($conn, $sql);
-
-
-
-    if (mysqli_num_rows($result) == 0) {
-        $error['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
-    } else if (empty($error)) {
-        $row = mysqli_fetch_assoc($result);
-        if ($row['status'] == 1) {
-            $taikhoanbikhoa['bikhoa'] = "Tài khoản đã bị khóa";
-            $_SESSION['login'] = 0;
+        // Kiểm tra tài khoản
+        if ($result->num_rows == 0) {
+            $_SESSION['errors']['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
         } else {
-            $_SESSION['id_user'] = $row['id'];
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['login'] = 1;
-            $_SESSION['totalAll'] = 0;
-            header('location: index.php');
-            exit();
+            $row = $result->fetch_assoc();
+
+            // Kiểm tra mật khẩu
+            if ($pass === $row['password']) {
+                if ($row['status'] == 1) { // Tài khoản bị khóa
+                    $_SESSION['errors']['bikhoa'] = "Tài khoản đã bị khóa";
+                    $_SESSION['login'] = 0;
+                } else {
+                    $_SESSION['id_user'] = $row['id'];
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['login'] = 1; // Đăng nhập thành công
+                    $_SESSION['totalAll'] = 0; // Thêm một biến cho trang chủ (nếu cần thiết)
+                    header('location: index.php'); // Chuyển hướng về trang chính
+                    exit();
+                }
+            } else {
+                $_SESSION['errors']['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
+            }
         }
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,82 +74,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
                 <form action="loginuser.php" class="sign-in-form" id="dangnhapform" method="post">
                     <div class="dangnhap-tittle">
                         <h2 id="title" class="dangnhap-titlee title">Đăng nhập</h2>
-                        <small></small>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
                         <input type="text" placeholder="Tên tài khoản" name="logname" value="<?php if (isset($name)) echo $name; ?>" />
                         <?php
-                        //echo isset($eror['rongten']) ? '<small>' . $eror['rongten'] . '</small>' : '';
-                        if (isset($error['rongten'])) {
-                            echo '<small>' . $error['rongten'] . '</small>';
-                        } else if (isset($error['khongtontai'])) {
-                            echo '<small>' . $error['khongtontai'] . '</small>';
-                        } else if (isset($taikhoanbikhoa['bikhoa'])) {
-                            echo '<small>' . $taikhoanbikhoa['bikhoa'] . '</small>';
+                        // Hiển thị lỗi nếu có
+                        if (isset($_SESSION['errors']['rongten'])) {
+                            echo '<small>' . $_SESSION['errors']['rongten'] . '</small>';
+                        } else if (isset($_SESSION['errors']['khongtontai'])) {
+                            echo '<small>' . $_SESSION['errors']['khongtontai'] . '</small>';
+                        } else if (isset($_SESSION['errors']['bikhoa'])) {
+                            echo '<small>' . $_SESSION['errors']['bikhoa'] . '</small>';
                         }
                         ?>
                     </div>
-                    <!--<div class="input-field">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" placeholder="Email" id="email" />
-                        <small></small>
-                    </div>-->
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
                         <input type="password" placeholder="Mật khẩu" name="logpass" value="<?php if (isset($pass)) echo $pass; ?>" />
                         <?php
-                        //echo isset($eror['rongten']) ? '<small>' . $eror['rongten'] . '</small>' : '';
-                        if (isset($error['rongpass'])) {
-                            echo '<small>' . $error['rongpass'] . '</small>';
-                        } else if (isset($error['khongtontai'])) {
-                            echo '<small>' . $error['khongtontai'] . '</small>';
+                        if (isset($_SESSION['errors']['rongpass'])) {
+                            echo '<small>' . $_SESSION['errors']['rongpass'] . '</small>';
+                        } else if (isset($_SESSION['errors']['khongtontai'])) {
+                            echo '<small>' . $_SESSION['errors']['khongtontai'] . '</small>';
                         }
                         ?>
                     </div>
                     <button type="submit" class="btn solid" name="btndangnhap">Đăng nhập</button>
-                    <!-- <p><a href="./loginadmin.php">Bạn là quản trị viên ?</a></p> -->
-                    <!-- <span id="quenmatkhau"><a href="#"> Quên mật khẩu?</a></span> -->
-                    <!-- <p class="social-text optionlogin">Hoặc với các mạng xã hội khác</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a> -->
-                    </div>
                 </form>
-
             </div>
         </div>
-
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
                     <h3>Bạn là thành viên mới?</h3>
-                    <p>
-                        Hãy nhấn vào nút bên dưới để đăng ký
-                    </p>
+                    <p>Hãy nhấn vào nút bên dưới để đăng ký</p>
                     <button class="btn transparent" id="sign-up-btn" onclick="window.location.href= 'signupuser.php'">
                         Đăng ký
                     </button>
                 </div>
                 <img src="" class="image" alt="" />
             </div>
-
         </div>
     </div>
-    <!--Dây là footer-->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-
-
 </body>
 
 </html>
