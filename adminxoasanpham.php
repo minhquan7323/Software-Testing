@@ -13,10 +13,10 @@ if (isset($_GET['id_sp'])) {
         header('location: admin.php?adminlayout=adminsanpham');
         exit();
     } else {
-        $_SESSION['adminxoasp'] = -1;
-        // $delete_query = "DELETE FROM products WHERE id = '$idsp'";
-        // mysqli_query($conn, $delete_query);
-         header('location: admin.php?adminlayout=adminsanpham&id_sp_xoa='.$idsp.'');
+        // Nếu sản phẩm chưa có trong đơn hàng, xóa sản phẩm
+        $delete_query = "DELETE FROM products WHERE id = '$idsp'";
+        mysqli_query($conn, $delete_query);
+        header('location: admin.php?adminlayout=adminsanpham');
         exit();
     }
 }

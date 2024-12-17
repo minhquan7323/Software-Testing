@@ -2,56 +2,86 @@
 session_start();
 include('./config.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
+class LoginHandler
+{
+    private $conn;
 
-    // Khởi tạo lỗi nếu chưa có
-    if (!isset($_SESSION['errors'])) {
-        $_SESSION['errors'] = [];
+    public function __construct($conn)
+    {
+        $this->conn = $conn;
     }
 
-    $_SESSION['login'] = 0; // Mặc định là chưa đăng nhập
-    $name = mysqli_real_escape_string($conn, $_POST['logname']); // Làm sạch dữ liệu đầu vào
-    $pass = $_POST['logpass'];
+    public function login($username, $password)
+    {
+        $errors = [];
 
-    // Kiểm tra trường nhập liệu
-    if (empty($name)) {
-        $_SESSION['errors']['rongten'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
-    }
-    if (empty($pass)) {
-        $_SESSION['errors']['rongpass'] = 'Vui lòng nhập đủ tài khoản mật khẩu';
-    }
+        // Kiểm tra nhập liệu
+        if (empty($username)) {
+            $errors['rongten'] = 'Vui lòng nhập tài khoản';
+        }
+        if (empty($password)) {
+            $errors['rongpass'] = 'Vui lòng nhập mật khẩu';
+        }
 
-    // Kiểm tra nếu không có lỗi
-    if (empty($_SESSION['errors'])) {
-        // Sử dụng prepared statement để tránh SQL injection
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->bind_param("s", $name);
+        if (!empty($errors)) {
+            return ['success' => false, 'errors' => $errors];
+        }
+
+        // Kiểm tra tài khoản trong database
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // Kiểm tra tài khoản
-        if ($result->num_rows == 0) {
-            $_SESSION['errors']['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
-        } else {
-            $row = $result->fetch_assoc();
-
-            // Kiểm tra mật khẩu
-            if ($pass === $row['password']) {
-                if ($row['status'] == 1) { // Tài khoản bị khóa
-                    $_SESSION['errors']['bikhoa'] = "Tài khoản đã bị khóa";
-                    $_SESSION['login'] = 0;
-                } else {
-                    $_SESSION['id_user'] = $row['id'];
-                    $_SESSION['username'] = $row['username'];
-                    $_SESSION['login'] = 1; // Đăng nhập thành công
-                    $_SESSION['totalAll'] = 0; // Thêm một biến cho trang chủ (nếu cần thiết)
-                    header('location: index.php'); // Chuyển hướng về trang chính
-                    exit();
-                }
-            } else {
-                $_SESSION['errors']['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
-            }
+        if ($result->num_rows === 0) {
+            $errors['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
+            return ['success' => false, 'errors' => $errors];
         }
+
+        $row = $result->fetch_assoc();
+
+        // Kiểm tra mật khẩu (sử dụng password_verify)
+        if (!password_verify($password, $row['password'])) {
+            $errors['khongtontai'] = 'Sai tài khoản hoặc mật khẩu';
+            return ['success' => false, 'errors' => $errors];
+        }
+
+        // Kiểm tra trạng thái tài khoản
+        if ($row['status'] == 1) {
+            $errors['bikhoa'] = 'Tài khoản đã bị khóa';
+            return ['success' => false, 'errors' => $errors];
+        }
+
+        // Đăng nhập thành công
+        return [
+            'success' => true,
+            'user' => [
+                'id' => $row['id'],
+                'username' => $row['username']
+            ]
+        ];
+    }
+}
+
+$errors = [];
+$name = '';
+$pass = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
+    $name = $_POST['logname'] ?? '';
+    $pass = $_POST['logpass'] ?? '';
+
+    $loginHandler = new LoginHandler($conn);
+    $result = $loginHandler->login($name, $pass);
+
+    if ($result['success']) {
+        $_SESSION['login'] = 1;
+        $_SESSION['id_user'] = $result['user']['id'];
+        $_SESSION['username'] = $result['user']['username'];
+        header('Location: index.php');
+        exit();
+    } else {
+        $errors = $result['errors'];
     }
 }
 ?>
@@ -64,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link rel="stylesheet" href="./loginsignupcss.css">
-    <title>Đăng nhập / Đăng ký</title>
+    <title>Đăng nhập</title>
 </head>
 
 <body>
@@ -72,48 +102,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btndangnhap'])) {
         <div class="forms-container">
             <div class="signin-signup">
                 <form action="loginuser.php" class="sign-in-form" id="dangnhapform" method="post">
-                    <div class="dangnhap-tittle">
-                        <h2 id="title" class="dangnhap-titlee title">Đăng nhập</h2>
+                    <div class="dangnhap-title">
+                        <h2 class="dangnhap-titlee title">Đăng nhập</h2>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Tên tài khoản" name="logname" value="<?php if (isset($name)) echo $name; ?>" />
-                        <?php
-                        // Hiển thị lỗi nếu có
-                        if (isset($_SESSION['errors']['rongten'])) {
-                            echo '<small>' . $_SESSION['errors']['rongten'] . '</small>';
-                        } else if (isset($_SESSION['errors']['khongtontai'])) {
-                            echo '<small>' . $_SESSION['errors']['khongtontai'] . '</small>';
-                        } else if (isset($_SESSION['errors']['bikhoa'])) {
-                            echo '<small>' . $_SESSION['errors']['bikhoa'] . '</small>';
-                        }
-                        ?>
+                        <input type="text" placeholder="Tên tài khoản" name="logname" value="<?= htmlspecialchars($name); ?>" />
+                        <?php if (isset($errors['rongten'])): ?>
+                            <small><?= htmlspecialchars($errors['rongten']); ?></small>
+                        <?php endif; ?>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Mật khẩu" name="logpass" value="<?php if (isset($pass)) echo $pass; ?>" />
-                        <?php
-                        if (isset($_SESSION['errors']['rongpass'])) {
-                            echo '<small>' . $_SESSION['errors']['rongpass'] . '</small>';
-                        } else if (isset($_SESSION['errors']['khongtontai'])) {
-                            echo '<small>' . $_SESSION['errors']['khongtontai'] . '</small>';
-                        }
-                        ?>
+                        <input type="password" placeholder="Mật khẩu" name="logpass" value="<?= htmlspecialchars($pass); ?>" />
+                        <?php if (isset($errors['rongpass'])): ?>
+                            <small><?= htmlspecialchars($errors['rongpass']); ?></small>
+                        <?php elseif (isset($errors['khongtontai'])): ?>
+                            <small><?= htmlspecialchars($errors['khongtontai']); ?></small>
+                        <?php elseif (isset($errors['bikhoa'])): ?>
+                            <small><?= htmlspecialchars($errors['bikhoa']); ?></small>
+                        <?php endif; ?>
                     </div>
                     <button type="submit" class="btn solid" name="btndangnhap">Đăng nhập</button>
                 </form>
-            </div>
-        </div>
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <h3>Bạn là thành viên mới?</h3>
-                    <p>Hãy nhấn vào nút bên dưới để đăng ký</p>
-                    <button class="btn transparent" id="sign-up-btn" onclick="window.location.href= 'signupuser.php'">
-                        Đăng ký
-                    </button>
-                </div>
-                <img src="" class="image" alt="" />
             </div>
         </div>
     </div>

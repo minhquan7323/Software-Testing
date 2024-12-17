@@ -6,22 +6,17 @@ use PHPUnit\Framework\TestCase;
 class LoginTest extends TestCase
 {
     private $conn;
-
-    // Cài đặt kết nối cơ sở dữ liệu thực tế
     protected function setUp(): void
     {
-        // Kết nối tới cơ sở dữ liệu thực tế
-        include 'config.php';  // Nhúng tệp cấu hình kết nối MySQL
-        $this->conn = $conn; // Kết nối MySQL thực tế
+        include 'config.php';
+        $this->conn = $conn;
     }
-
-    // Phương thức để reset dữ liệu POST và SESSION trước mỗi test
     private function resetGlobals(): void
     {
         $_POST = [];
         $_SESSION = [];
-        $_SESSION['errors'] = [];  // Đảm bảo mảng lỗi được khởi tạo
-        session_start();  // Khởi tạo session nếu cần thiết
+        $_SESSION['errors'] = [];
+        session_start();
     }
 
     // Test trường hợp username và password trống
@@ -72,7 +67,7 @@ class LoginTest extends TestCase
 
         $_POST['btndangnhap'] = true;
         $_POST['logname'] = 'nguyen1';  // Giả sử tài khoản này có trong DB
-        $_POST['logpass'] = 'nguyen211';  // Mật khẩu đúng
+        $_POST['logpass'] = 'nguyen1';  // Mật khẩu đúng
 
         // Truy vấn thực tế tới cơ sở dữ liệu
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
